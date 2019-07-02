@@ -1,8 +1,10 @@
 <?php
 namespace DmApi;
 
-use DmApi\Result\User;
+use Exception;
 use GuzzleHttp\Exception\ClientException;
+use JsonMapper;
+use JsonMapper_Exception;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
@@ -32,6 +34,11 @@ class ApiResponse
     private $resultClass = null;
 
     /**
+     * @var JsonMapper
+     */
+    private $mapper;
+
+    /**
      * ApiResponse constructor.
      *
      * @param Throwable|ResponseInterface $response
@@ -40,9 +47,13 @@ class ApiResponse
     public function __construct($response, $resultClass = null)
     {
         $this->resultClass = $resultClass;
+        $this->mapper = new JsonMapper();
         if ($response instanceof ClientException) {
             $message = json_decode($response->getResponse()->getBody()->getContents(), true);
             $this->error = new ApiException($response->getResponse()->getStatusCode(), $message['error'], $message['error_description']);
+            $this->state = self::$ERROR;
+        } else if ($response instanceof Exception) {
+            $this->error = new ApiException($response->getCode(), $response->getMessage());
             $this->state = self::$ERROR;
         } else {
             $this->response = $response;
@@ -84,21 +95,17 @@ class ApiResponse
             return $data;
         }
         if ($this->resultClass) {
-
             if (is_array($data)) {
-                $arr = [];
-                foreach ($data as $entry) {
-                    $obj = new $this->resultClass();
-                    foreach ($entry as $key => $val) {
-                        $obj->$key = $val;
-                    }
-                    $arr[] = $obj;
+                try {
+                    $obj = $this->mapper->mapArray($data, [], $this->resultClass);
+                } catch (JsonMapper_Exception $e) {
+                    $obj = $data;
                 }
-                $obj = $arr;
             } else {
-                $obj = new $this->resultClass();
-                foreach ($data as $key => $val) {
-                    $obj->$key = $val;
+                try {
+                    $obj = $this->mapper->map($data, new $this->resultClass());
+                } catch (JsonMapper_Exception $e) {
+                    $obj = $data;
                 }
             }
 

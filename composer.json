@@ -1,0 +1,24 @@
+{
+  "name": "digitalsolutions/digimember-api-client",
+  "version": "0.5.1",
+  "description": "Small library that let's you connect to the DigiMember API on any wordpress blog",
+  "type": "library",
+  "minimum-stability": "dev",
+  "require": {
+    "guzzlehttp/guzzle": "^6.3",
+    "php": ">=7.0.0",
+    "ext-json": "*",
+    "netresearch/jsonmapper": "dev-master"
+  },
+  "authors": [
+    {
+      "name": "Digital Solutions GmbH",
+      "email": "support@digimember.de"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "DmApi\\": "src/"
+    }
+  }
+}

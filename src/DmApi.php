@@ -3,6 +3,8 @@
 namespace DmApi;
 
 use DmApi\Result\Content;
+use DmApi\Result\LectureMenu;
+use DmApi\Result\Order;
 use DmApi\Result\Product;
 use DmApi\Result\User;
 use GuzzleHttp\Client;
@@ -67,16 +69,18 @@ class DmApi
     /**
      * @param string $userEmail
      * @param int    $productId
+     * @param string $orderId
      * @param string $userPassword
      * @return User
      * @throws ApiException
      */
-    public function userRegistration($userEmail, $productId, $userPassword = '')
+    public function userRegistration($userEmail, $productId, $orderId = '', $userPassword = '')
     {
         $result = $this->makeRequest(Params::$PARAM_ACTION_USER_REGISTRATION, [
             Params::$PARAM_USER_EMAIL => $userEmail,
             Params::$PARAM_PRODUCT_ID => $productId,
             Params::$PARAM_USER_PASSWORD => $userPassword,
+            Params::$PARAM_ORDER_ID => $orderId,
         ], User::class);
         if ($result->isSuccess()) {
             /** @var User $data */
@@ -144,14 +148,91 @@ class DmApi
         throw $result->getError();
     }
 
-    public function getLectureMenu($productId) {
+    /**
+     * @param int $productId
+     * @return LectureMenu[]
+     * @throws ApiException
+     */
+    public function getLectureMenu($productId)
+    {
         $result = $this->makeRequest(Params::$PARAM_ACTION_GET_LECTURE_MENU, [
             Params::$PARAM_PRODUCT_ID => $productId,
-        ]);
+        ], LectureMenu::class);
         if ($result->isSuccess()) {
-            /** @var Content[] $data */
+            /** @var LectureMenu[] $data */
             $data = $result->getData();
             return $data;
+        }
+        throw $result->getError();
+    }
+
+    /**
+     * @param $userId
+     * @return Order[]
+     * @throws ApiException
+     */
+    public function listOrders($userId)
+    {
+        $result = $this->makeRequest(Params::$PARAM_ACTION_LIST_ORDERS, [
+            Params::$PARAM_USER_ID => $userId,
+        ], Order::class);
+        if ($result->isSuccess()) {
+            /** @var Order[] $data */
+            $data = $result->getData();
+            return $data;
+        }
+        throw $result->getError();
+    }
+
+    /**
+     * @return Product[]
+     * @throws ApiException
+     */
+    public function listProducts()
+    {
+        $result = $this->makeRequest(Params::$PARAM_ACTION_LIST_PRODUCTS, [], Product::class);
+        if ($result->isSuccess()) {
+            /** @var Product[] $data */
+            $data = $result->getData();
+            return $data;
+        }
+        throw $result->getError();
+    }
+
+    /**
+     * @param string $orderId
+     * @return Order
+     * @throws ApiException
+     */
+    public function getOrder($orderId)
+    {
+        $result = $this->makeRequest(Params::$PARAM_ACTION_GET_ORDER, [
+            Params::$PARAM_ORDER_ID => $orderId,
+        ], Order::class);
+        if ($result->isSuccess()) {
+            /** @var Order $data */
+            $data = $result->getData();
+            return $data;
+        }
+        throw $result->getError();
+    }
+
+    /**
+     * @param string $userEmail
+     * @param int    $productId
+     * @param string $orderId
+     * @return bool
+     * @throws ApiException
+     */
+    public function createOrder($userEmail, $productId, $orderId)
+    {
+        $result = $this->makeRequest(Params::$PARAM_ACTION_CREATE_ORDER, [
+            Params::$PARAM_USER_EMAIL => $userEmail,
+            Params::$PARAM_PRODUCT_ID => $productId,
+            Params::$PARAM_ORDER_ID => $orderId,
+        ]);
+        if ($result->isSuccess()) {
+            return true;
         }
         throw $result->getError();
     }

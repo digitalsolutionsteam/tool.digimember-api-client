@@ -14,12 +14,12 @@ class Product
     public $created;
     /** @var string */
     public $name;
-    /** @var string */
+    /** @var string | null */
     public $first_login_url;
-    /** @var string */
+    /** @var string | null */
     public $default_login_url;
-    /** @var string */
+    /** @var string | null */
     public $shortcode_url;
-    /** @var string */
+    /** @var array */
     public $properties;
 }
