@@ -29,4 +29,6 @@ class User
     public $user_status;
     /** @var string */
     public $display_name;
+    /** @var string */
+    public $user_loginkey;
 }
