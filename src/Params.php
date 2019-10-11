@@ -57,7 +57,7 @@ class Params
     /**
      * @var string
      */
-    public static $PARAM_USER_EMAIL = 'userEmail';
+    public static $PARAM_USER_EMAIL_OR_LOGIN_KEY = 'userEmail';
     /**
      * @var string
      */

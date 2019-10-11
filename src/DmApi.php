@@ -50,6 +50,7 @@ class DmApi
 
     /**
      * @param $userEmail
+     *
      * @return User
      * @throws ApiException
      */
@@ -71,6 +72,7 @@ class DmApi
      * @param int    $productId
      * @param string $orderId
      * @param string $userPassword
+     *
      * @return User
      * @throws ApiException
      */
@@ -93,6 +95,7 @@ class DmApi
     /**
      * @param $userEmail
      * @param $userPassword
+     *
      * @return User
      * @throws ApiException
      */
@@ -112,6 +115,7 @@ class DmApi
 
     /**
      * @param int $userId
+     *
      * @return Product[]
      * @throws ApiException
      */
@@ -131,6 +135,7 @@ class DmApi
     /**
      * @param int $userId
      * @param int $productId
+     *
      * @return Content[]
      * @throws ApiException
      */
@@ -150,6 +155,7 @@ class DmApi
 
     /**
      * @param int $productId
+     *
      * @return LectureMenu[]
      * @throws ApiException
      */
@@ -168,6 +174,7 @@ class DmApi
 
     /**
      * @param $userId
+     *
      * @return Order[]
      * @throws ApiException
      */
@@ -201,6 +208,7 @@ class DmApi
 
     /**
      * @param string $orderId
+     *
      * @return Order
      * @throws ApiException
      */
@@ -218,16 +226,17 @@ class DmApi
     }
 
     /**
-     * @param string $userEmail
+     * @param string $userEmailOrLoginKey
      * @param int    $productId
      * @param string $orderId
+     *
      * @return bool
      * @throws ApiException
      */
-    public function createOrder($userEmail, $productId, $orderId)
+    public function createOrder($userEmailOrLoginKey, $productId, $orderId)
     {
         $result = $this->makeRequest(Params::$PARAM_ACTION_CREATE_ORDER, [
-            Params::$PARAM_USER_EMAIL => $userEmail,
+            Params::$PARAM_USER_EMAIL_OR_LOGIN_KEY => $userEmailOrLoginKey,
             Params::$PARAM_PRODUCT_ID => $productId,
             Params::$PARAM_ORDER_ID => $orderId,
         ]);
@@ -241,6 +250,7 @@ class DmApi
      * @param string        $action
      * @param array         $params
      * @param null | string $resultClass
+     *
      * @return ApiResponse
      */
     protected function makeRequest(string $action, array $params, $resultClass = null)
