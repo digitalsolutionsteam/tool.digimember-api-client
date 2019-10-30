@@ -233,7 +233,7 @@ class DmApi
      * @return bool
      * @throws ApiException
      */
-    public function createOrder($userEmailOrLoginKey, $productId, $orderId)
+    public function createOrder($userEmailOrLoginKey, $productId, $orderId = 'by_public_api')
     {
         $result = $this->makeRequest(Params::$PARAM_ACTION_CREATE_ORDER, [
             Params::$PARAM_USER_EMAIL_OR_LOGIN_KEY => $userEmailOrLoginKey,
