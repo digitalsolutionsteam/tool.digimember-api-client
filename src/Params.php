@@ -65,6 +65,10 @@ class Params
     /**
      * @var string
      */
+    public static $PARAM_USER_ID_OR_LOGIN_KEY = 'userIdOrLoginKey';
+    /**
+     * @var string
+     */
     public static $PARAM_USER_PASSWORD = 'userPassword';
     /**
      * @var string
