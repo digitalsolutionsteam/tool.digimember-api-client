@@ -114,15 +114,15 @@ class DmApi
     }
 
     /**
-     * @param int $userId
+     * @param int|string $userIdOrLoginKey
      *
      * @return Product[]
      * @throws ApiException
      */
-    public function listAccessibleProducts($userId)
+    public function listAccessibleProducts($userIdOrLoginKey)
     {
         $result = $this->makeRequest(Params::$PARAM_ACTION_LIST_ACCESSIBLE_PRODUCTS, [
-            Params::$PARAM_USER_ID => $userId,
+            Params::$PARAM_USER_ID_OR_LOGIN_KEY => $userIdOrLoginKey,
         ], Product::class);
         if ($result->isSuccess()) {
             /** @var Product[] $data */
@@ -133,16 +133,16 @@ class DmApi
     }
 
     /**
-     * @param int $userId
-     * @param int $productId
+     * @param int|string $userIdOrLoginKey
+     * @param int        $productId
      *
      * @return Content[]
      * @throws ApiException
      */
-    public function listAccessibleContent($userId, $productId)
+    public function listAccessibleContent($userIdOrLoginKey, $productId)
     {
         $result = $this->makeRequest(Params::$PARAM_ACTION_LIST_ACCESSIBLE_CONTENT, [
-            Params::$PARAM_USER_ID => $userId,
+            Params::$PARAM_USER_ID_OR_LOGIN_KEY => $userIdOrLoginKey,
             Params::$PARAM_PRODUCT_ID => $productId,
         ], Content::class);
         if ($result->isSuccess()) {
@@ -233,7 +233,7 @@ class DmApi
      * @return bool
      * @throws ApiException
      */
-    public function createOrder($userEmailOrLoginKey, $productId, $orderId)
+    public function createOrder($userEmailOrLoginKey, $productId, $orderId = 'by_public_api')
     {
         $result = $this->makeRequest(Params::$PARAM_ACTION_CREATE_ORDER, [
             Params::$PARAM_USER_EMAIL_OR_LOGIN_KEY => $userEmailOrLoginKey,
